@@ -38,14 +38,18 @@
 
             <TextView
                 android:id="@+id/view_holder_item_name"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/view_holder_image"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:padding="8dp"
                 android:text="@{movie.title}"
-                tools:text="Chicken" />
+                tools:text="Hotel Transylvania: Transformania" />
 
             <TextView
                 android:id="@+id/view_holder_item_year"

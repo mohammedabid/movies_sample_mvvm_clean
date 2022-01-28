@@ -3,65 +3,78 @@ package com.example.sampleapplistdetail.data.model
 import android.os.Parcelable
 import com.example.sampleapplistdetail.common.Constants
 import com.example.sampleapplistdetail.domain.model.MoviesDetail
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class MoviesDetailResponse(
-	val originalLanguage: String? = null,
-	val imdbId: String? = null,
-	val video: Boolean? = null,
-	val title: String? = null,
-	val backdropPath: String? = null,
-	val revenue: Int? = null,
-	val genres: List<GenresItem?>? = null,
-	val popularity: Double? = null,
-	val productionCountries: List<ProductionCountriesItem?>? = null,
-	val id: Int? = null,
-	val voteCount: Int? = null,
-	val budget: Int? = null,
-	val overview: String? = null,
-	val originalTitle: String? = null,
-	val runtime: Int? = null,
-	val posterPath: String? = null,
-	val spokenLanguages: List<SpokenLanguagesItem?>? = null,
-	val productionCompanies: List<ProductionCompaniesItem?>? = null,
-	val releaseDate: String? = null,
-	val voteAverage: Double? = null,
-	val belongsToCollection: Boolean? = null,
-	val tagline: String? = null,
-	val adult: Boolean? = null,
-	val homepage: String? = null,
-	val status: String? = null
+	@SerializedName("adult") var adult: Boolean? = null,
+	@SerializedName("backdrop_path") var backdropPath: String? = null,
+	@SerializedName("belongs_to_collection") var belongsToCollection: String? = null,
+	@SerializedName("budget") var budget: Int? = null,
+	@SerializedName("genres") var genres: ArrayList<Genres> = arrayListOf(),
+	@SerializedName("homepage") var homepage: String? = null,
+	@SerializedName("id") var id: Int? = null,
+	@SerializedName("imdb_id") var imdbId: String? = null,
+	@SerializedName("original_language") var originalLanguage: String? = null,
+	@SerializedName("original_title") var originalTitle: String? = null,
+	@SerializedName("overview") var overview: String? = null,
+	@SerializedName("popularity") var popularity: Double? = null,
+	@SerializedName("poster_path") var posterPath: String? = null,
+	@SerializedName("production_companies") var productionCompanies: ArrayList<ProductionCompanies> = arrayListOf(),
+	@SerializedName("production_countries") var productionCountries: ArrayList<ProductionCountries> = arrayListOf(),
+	@SerializedName("release_date") var releaseDate: String? = null,
+	@SerializedName("revenue") var revenue: Int? = null,
+	@SerializedName("runtime") var runtime: Int? = null,
+	@SerializedName("spoken_languages") var spokenLanguages: ArrayList<SpokenLanguages> = arrayListOf(),
+	@SerializedName("status") var status: String? = null,
+	@SerializedName("tagline") var tagline: String? = null,
+	@SerializedName("title") var title: String? = null,
+	@SerializedName("video") var video: Boolean? = null,
+	@SerializedName("vote_average") var voteAverage: Double? = null,
+	@SerializedName("vote_count") var voteCount: Int? = null
 ) : Parcelable
 
 @Parcelize
-data class GenresItem(
-	val name: String? = null,
-	val id: Int? = null
+data class Genres(
+
+	@SerializedName("id") var id: Int? = null,
+	@SerializedName("name") var name: String? = null
+
 ) : Parcelable
 
 @Parcelize
-data class ProductionCountriesItem(
-	val iso31661: String? = null,
-	val name: String? = null
+
+data class ProductionCountries(
+
+	@SerializedName("iso_3166_1") var iso31661: String? = null,
+	@SerializedName("name") var name: String? = null
+
 ) : Parcelable
 
 @Parcelize
-data class ProductionCompaniesItem(
-	val logoPath: String? = null,
-	val name: String? = null,
-	val id: Int? = null,
-	val originCountry: String? = null
+
+data class ProductionCompanies(
+
+	@SerializedName("id") var id: Int? = null,
+	@SerializedName("logo_path") var logoPath: String? = null,
+	@SerializedName("name") var name: String? = null,
+	@SerializedName("origin_country") var originCountry: String? = null
+
 ) : Parcelable
 
 @Parcelize
-data class SpokenLanguagesItem(
-	val name: String? = null,
-	val iso6391: String? = null
+
+data class SpokenLanguages(
+
+	@SerializedName("iso_639_1") var iso6391: String? = null,
+	@SerializedName("name") var name: String? = null
+
 ) : Parcelable
 
-fun MoviesDetailResponse.toDomainMovieDetail() : MoviesDetail {
-	return MoviesDetail(
+
+fun MoviesDetailResponse.toDomainMovieDetail(): MoviesDetail {
+    return MoviesDetail(
 		id = this.id,
 		title = this.title,
 		releaseDate = this.releaseDate,
