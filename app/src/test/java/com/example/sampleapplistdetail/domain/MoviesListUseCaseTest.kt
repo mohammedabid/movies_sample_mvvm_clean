@@ -2,47 +2,46 @@ package com.example.sampleapplistdetail.domain
 
 import app.cash.turbine.test
 import com.example.sampleapplistdetail.common.Resource
+import com.example.sampleapplistdetail.domain.repository.GetMoviesListRepository
 import com.example.sampleapplistdetail.domain.use_case.GetMoviesListUseCase
-import com.example.sampleapplistdetail.presentation.movies_list.MoviesListViewModel
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
+import junit.framework.Assert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock
+import java.io.IOException
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-class MoviesListViewModelTest : CoroutineScope by TestCoroutineScope() {
+class MoviesListUseCaseTest : CoroutineScope by TestCoroutineScope() {
 
     @get:Rule
     val testCoroutineRule = MainCoroutineScopeRule()
 
-    val useCase = mock<GetMoviesListUseCase>()
+    val repo = mock<GetMoviesListRepository>()
+    val useCase = GetMoviesListUseCase(repo)
 
-    val viewModel = MoviesListViewModel(useCase)
 
     @Test
-    fun `should get movies`() =
+    fun `should throw Resource Error`() =
         runBlockingTest {
-            whenever(useCase()).thenReturn(flow {
-                emit(Resource.Success(data = FakeMoviesGenerator.generateDummyMovieList(5)))
-            }
-            )
+            whenever(repo.getMoviesList()).thenAnswer{ throw IOException() }
 
-            val movies = viewModel.getMoviesList()
+            val movies = useCase()
 
-            viewModel.moviesList.test {
-                System.out.println(awaitItem().toString())
+            movies.test {
+                Assert.assertTrue(awaitItem() is Resource.Loading)
+                Assert.assertTrue(awaitItem() is Resource.Error)
+                awaitComplete()
             }
-            verify(useCase, times(1)).invoke()
+            verify(repo, times(1)).getMoviesList()
         }
 
 }
